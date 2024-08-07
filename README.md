@@ -1,1 +1,1 @@
-# VideoExifLocationExtraxtor
+# VideoExifLocationExtractor
