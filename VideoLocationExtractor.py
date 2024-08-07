@@ -24,13 +24,14 @@ def parse_dms(dms_str):
 
 def extract_gps_coordinates(exif_data):
     try:
-        # Extract and parse the GPS coordinates
-        gps_latitude = exif_data.get('GPSLatitude')
-        gps_longitude = exif_data.get('GPSLongitude')
+        # Extract GPS coordinates using the correct keys
+        gps_latitude = exif_data.get('Composite:GPSLatitude')
+        gps_longitude = exif_data.get('Composite:GPSLongitude')
 
-        if gps_latitude and gps_longitude:
-            lat = parse_dms(gps_latitude)
-            lon = parse_dms(gps_longitude)
+        if gps_latitude is not None and gps_longitude is not None:
+            # GPS data is already in decimal format, no need to parse DMS
+            lat = float(gps_latitude)
+            lon = float(gps_longitude)
             return lat, lon
         else:
             return None
