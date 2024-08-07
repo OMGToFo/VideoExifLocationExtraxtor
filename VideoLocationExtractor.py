@@ -4,6 +4,7 @@ import json
 import folium
 from streamlit_folium import st_folium
 import tempfile
+import exiftool
 
 def parse_dms(dms_str):
     """
@@ -41,14 +42,9 @@ def extract_gps_coordinates(exif_data):
 #update for github
 def get_exif_data(file_path):
     try:
-        result = subprocess.run(
-            ['~/.local/bin/exiftool', '-json', file_path],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True
-        )
-        exif_data = json.loads(result.stdout)[0]
-        return exif_data
+        with exiftool.ExifTool() as et:
+            metadata = et.get_metadata(file_path)
+            return metadata
     except Exception as e:
         st.error(f"Error extracting EXIF data: {e}")
         return None
