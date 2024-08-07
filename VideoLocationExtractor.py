@@ -43,8 +43,8 @@ def extract_gps_coordinates(exif_data):
 def get_exif_data(file_path):
     try:
         with exiftool.ExifTool() as et:
-            metadata = et.get_metadata(file_path)
-            return metadata
+            metadata = et.execute_json(file_path)
+            return metadata[0] if metadata else {}
     except Exception as e:
         st.error(f"Error extracting EXIF data: {e}")
         return None
